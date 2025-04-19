@@ -1,223 +1,256 @@
 'use client'
 
-import React from 'react'
-import Script from 'next/script'
+import React, { useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+interface FormData {
+  lastName: string;
+  email: string;
+  description: string;
+  cfToken: string;
+}
 
 export function ContactForm() {
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const { 
+    register, 
+    handleSubmit, 
+    reset, 
+    setValue,
+    formState: { errors } 
+  } = useForm<FormData>();
+
+  useEffect(() => {
+    const loadTurnstile = async () => {
+      const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+      if (!siteKey) {
+        toast.error('Cloudflare Turnstileの設定が完了していません。管理者に連絡してください');
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => {
+        if (window.turnstile && turnstileRef.current) {
+          window.turnstile.render(turnstileRef.current, {
+            sitekey: siteKey,
+            callback: (token: string) => {
+              setValue('cfToken', token);
+            },
+          });
+        }
+      };
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    };
+
+    loadTurnstile();
+  }, [setValue]);
+
+  const onSubmit = async (data: FormData) => {
+    if (!data.cfToken) {
+      toast.error('認証に失敗しました');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('xnQsjsdp', '69c7a6d72f71fe4b3449a916364f88ab3b2f1af981172a8c258c2f94b5ec0d51');
+      formData.append('zc_gad', '');
+      formData.append('xmIwtLD', '7bf510bc88485fa2aa3f3c769cb58c6d4360e668e3f53b596d1ad4d77fc36682a2d8caaa8b9e18e2db91ee5168a69194');
+      formData.append('actionType', 'Q29udGFjdHM=');
+      formData.append('returnURL', 'null');
+      formData.append('Last Name', data.lastName);
+      formData.append('Email', data.email);
+      formData.append('Description', data.description);
+
+      const response = await fetch('https://crm.zoho.com/crm/WebToContactForm', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        toast.success('お問い合わせが送信されました');
+        reset();
+      } else {
+        throw new Error('送信に失敗しました');
+      }
+    } catch (error) {
+      toast.error('エラーが発生しました');
+    }
+  };
+
   return (
-    <div id='crmWebToEntityForm' className='zcwf_lblLeft crmWebToEntityForm' style={{backgroundColor: 'white', color: 'black', maxWidth: '900px'}}>
+    <div id='crmWebToEntityForm' className='crmWebToEntityForm' style={{ 
+      backgroundColor: 'white', 
+      color: 'black', 
+      maxWidth: '900px', 
+      padding: '25px', 
+      margin: '0 auto', 
+      boxSizing: 'border-box',
+      textAlign: 'center',
+      fontFamily: 'Noto Sans JP',
+      
+    }}>
       <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       <meta httpEquiv='content-type' content='text/html;charset=SHIFT-JIS' />
-      <Script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js' />
       
-      <div className='wf_customMessageBox' id='wf_splash' style={{display: 'none'}}>
-        <div className='wf_customCircle'>
-          <div className='wf_customCheckMark'></div>
-        </div>
-        <span id='wf_splash_info'></span>
+      <div className='zcwf_title' style={{ 
+        maxWidth: '900px', 
+        color: 'black', 
+        fontFamily: 'Noto Sans JP',
+        fontSize: '20px',
+        textAlign: 'center',
+        marginBottom: '15px'
+      }}>
+        お問い合わせ
       </div>
-
-      <form id='webform228887000007830020' name='WebToContacts228887000007830020' acceptCharset='UTF-8'>
-        <input type='text' style={{display: 'none'}} name='xnQsjsdp' defaultValue='b8a72c4301bc115068b12bf4ba44bf1778b10d9de661181f03243ef60c958fdc' />
-        <input type='hidden' name='zc_gad' id='zc_gad' defaultValue='' />
-        <input type='text' style={{display: 'none'}} name='xmIwtLD' defaultValue='ff489580c03d78d1b0c97bd6891318e7e218449a43de6995097e545cd7ddfb271f5a9dfdec97a123d05745f70da8ec76' />
-        <input type='text' style={{display: 'none'}} name='actionType' defaultValue='Q29udGFjdHM=' />
-        <input type='text' style={{display: 'none'}} name='returnURL' defaultValue='null' />
-
-        <div className='zcwf_title contact-form-title'>
-          お問い合わせ
-        </div>
-
-        <div className='zcwf_row'>
-          <div className='zcwf_col_lab' style={{fontSize: '20px', fontFamily: 'Noto Sans JP'}}>
+      
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='zcwf_row' style={{ margin: '10px 0 19px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className='zcwf_col_lab' style={{ 
+            fontSize: '16px', 
+            fontFamily: 'Noto Sans JP',
+            textAlign: 'center',
+            width: '100%',
+            marginBottom: '8px'
+          }}>
             <label htmlFor='Last_Name'>
-              お名前（Name）<span style={{color: 'red'}}>*</span>
+              お名前 <span style={{ color: 'red' }}>*</span>
             </label>
           </div>
-          <div className='zcwf_col_fld'>
-            <input type='text' id='Last_Name' name='Last Name' maxLength={80} style={{width: '100%', fontSize: '20px', fontFamily: 'Noto Sans JP'}} />
-            <div className='zcwf_col_help'></div>
+          <div className='zcwf_col_fld' style={{ width: '100%' }}>
+            <input
+              id='Last_Name'
+              {...register('lastName', { required: 'お名前は必須です' })}
+              style={{ 
+                width: '50%', 
+                border: '1px solid #c0c6cc', 
+                borderRadius: '2px',
+                height: '3em',
+                lineHeight: '3em',
+                padding: '8px'
+              }}
+            />
+            {errors.lastName && <span style={{ color: 'red' }}>{errors.lastName.message as string}</span>}
           </div>
         </div>
 
-        <div className='zcwf_row'>
-          <div className='zcwf_col_lab' style={{fontSize: '20px', fontFamily: 'Noto Sans JP'}}>
+        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className='zcwf_col_lab' style={{ 
+            fontSize: '16px', 
+            fontFamily: 'Noto Sans JP',
+            textAlign: 'left',
+            width: '100%',
+            marginBottom: '5px'
+          }}>
             <label htmlFor='Email'>
-              メール（Email)<span style={{color: 'red'}}>*</span>
+              メール <span style={{ color: 'red' }}>*</span>
             </label>
           </div>
-          <div className='zcwf_col_fld'>
-            <input type='text' id='Email' name='Email' maxLength={100} style={{width: '100%', fontSize: '20px', fontFamily: 'Noto Sans JP'}} />
-            <div className='zcwf_col_help'></div>
+          <div className='zcwf_col_fld' style={{ width: '100%' }}>
+            <input
+              id='Email'
+              type='email'
+              {...register('email', { 
+                required: 'メールアドレスは必須です',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: '有効なメールアドレスを入力してください'
+                }
+              })}
+              style={{ 
+                width: '50%', 
+                border: '1px solid #c0c6cc', 
+                borderRadius: '2px',
+                height: '3em',
+                lineHeight: '3em',
+                padding: '20px'
+              }}
+            />
+            {errors.email && <span style={{ color: 'red' }}>{errors.email.message as string}</span>}
           </div>
         </div>
 
-        <div className='zcwf_row'>
-          <div className='zcwf_col_lab' style={{fontSize: '20px', fontFamily: 'Noto Sans JP'}}>
+        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className='zcwf_col_lab' style={{ 
+            fontSize: '16px', 
+            fontFamily: 'Noto Sans JP',
+            textAlign: 'left',
+            width: '100%',
+            marginBottom: '5px'
+          }}>
             <label htmlFor='Description'>
-              内容（Message）<span style={{color: 'red'}}>*</span>
+              内容 <span style={{ color: 'red' }}>*</span>
             </label>
           </div>
-          <div className='zcwf_col_fld'>
-            <textarea id='Description' name='Description' style={{width: '100%', fontSize: '20px', fontFamily: 'Noto Sans JP'}} />
-            <div className='zcwf_col_help'></div>
+          <div className='zcwf_col_fld' style={{ width: '100%' }}>
+            <textarea
+              id='Description'
+              {...register('description', { required: '内容は必須です' })}
+              style={{ 
+                width: '50%', 
+                border: '1px solid #c0c6cc', 
+                borderRadius: '2px',
+                fontFamily: 'Arial, sans-serif',
+                minHeight: '100px'
+              }}
+            />
+            {errors.description && <span style={{ color: 'red' }}>{errors.description.message as string}</span>}
           </div>
         </div>
 
-        <div className='zcwf_row'>
+        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'column' }}>
           <div className='zcwf_col_lab'></div>
-          <div className='zcwf_col_fld'>
-            <input type='submit' id='formsubmit' className='formsubmit zcwf_button' value='送信する'  style={{fontSize: '20px'}}/>
-            <input type='reset' className='zcwf_button' name='reset' value='リセットする'  style={{fontSize: '20px'}}/>
+          <div className='zcwf_col_fld' style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <div 
+              ref={turnstileRef}
+              style={{ margin: '20px 0' }}
+            />
+          </div>
+        </div>
+
+        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', justifyContent: 'center' }}>
+          <div className='zcwf_col_lab'></div>
+          <div className='zcwf_col_fld' style={{ display: 'flex', gap: '10px' }}>
+            <button 
+              type='submit' 
+              className='formsubmit zcwf_button'
+              style={{
+                background: 'linear-gradient(0deg, #0279FF 0%, #00A3F3 100%)',
+                color: 'white',
+                padding: '8px 16px',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginRight: '10px'
+              }}
+            >
+              送信
+            </button>
+            <button 
+              type='button' 
+              onClick={() => reset()}
+              style={{
+                background: '#f0f0f0',
+                color: '#313949',
+                padding: '8px 16px',
+                border: '1px solid #c0c6cc',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              リセット
+            </button>
           </div>
         </div>
       </form>
-
-      <style jsx global>{`
-        html, body {
-          margin: 0px;
-        }
-
-        .wf_customMessageBox {
-          font-family: Arial, Helvetica, sans-serif;
-          color: #132C14;
-          background: #F5FAF5;
-          box-shadow: 0 2px 6px 0 rgba(0,0,0,0.25);
-          max-width: 90%;
-          width: max-content;
-          word-break: break-word;
-          z-index: 11000;
-          border-radius: 6px;
-          border: 1px solid #A9D3AB;
-          min-width: 100px;
-          padding: 10px 15px;
-          display: flex;
-          align-items: center;
-          position: fixed;
-          top: 20px;
-          left: 50%;
-          transform: translate(-50%, 0);
-        }
-
-        .wf_customCircle {
-          position: relative;
-          background-color: #12AA67;
-          border-radius: 100%;
-          width: 20px;
-          height: 20px;
-          flex: none;
-          margin-right: 7px;
-        }
-
-        .wf_customCheckMark {
-          box-sizing: unset !important;
-          position: absolute;
-          transform: rotate(45deg) translate(-50%, -50%);
-          left: 6px;
-          top: 9px;
-          height: 8px;
-          width: 3px;
-          border-bottom: 2px solid #fff;
-          border-right: 2px solid #fff;
-        }
-
-        .formsubmit.zcwf_button {
-          color: white !important;
-          background: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
-        }
-
-        #crmWebToEntityForm.zcwf_lblLeft {
-          width: 100%;
-          padding: 25px;
-          margin: 0 auto;
-          box-sizing: border-box;
-        }
-
-        #crmWebToEntityForm.zcwf_lblLeft * {
-          box-sizing: border-box;
-        }
-
-        #crmWebToEntityForm {
-          text-align: left;
-        }
-
-        #crmWebToEntityForm * {
-          direction: ltr;
-        }
-
-        .zcwf_lblLeft .zcwf_title {
-          word-wrap: break-word;
-          padding: 0px 6px 10px;
-          font-weight: bold;
-          font-family: Arial;
-          font-size: 30px;
-        }
-
-        .zcwf_lblLeft .zcwf_col_fld input[type=text],
-        .zcwf_lblLeft .zcwf_col_fld textarea {
-          width: 100%;
-          border: 1px solid #c0c6cc !important;
-          resize: vertical;
-          border-radius: 2px;
-          float: left;
-          font-family: 'Noto Sans JP', sans-serif;
-          font-size: 20px;
-        }
-
-        .zcwf_lblLeft .zcwf_col_lab {
-          width: 30%;
-          word-break: break-word;
-          padding: 0px 6px 0px;
-          margin-right: 10px;
-          margin-top: 5px;
-          float: left;
-          min-height: 1px;
-          font-size: 20px;
-          font-family: 'Noto Sans JP', sans-serif;
-        }
-
-        .zcwf_lblLeft .zcwf_col_fld {
-          float: left;
-          width: 68%;
-          padding: 0px 6px 0px;
-          position: relative;
-          margin-top: 5px;
-        }
-
-        .zcwf_lblLeft .zcwf_row {
-          margin: 15px 0px;
-        }
-
-        .zcwf_lblLeft .formsubmit {
-          margin-right: 5px;
-          cursor: pointer;
-          color: #313949;
-          font-size: 20px;
-          font-family: 'Noto Sans JP', sans-serif;
-        }
-
-        .zcwf_lblLeft .zcwf_button {
-          font-size: 20px;
-          color: #313949;
-          border: 1px solid #c0c6cc;
-          padding: 3px 9px;
-          border-radius: 4px;
-          cursor: pointer;
-          max-width: 120px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          font-family: 'Noto Sans JP', sans-serif;
-        }
-
-        @media all and (max-width: 900px) {
-          .zcwf_lblLeft .zcwf_col_lab,
-          .zcwf_lblLeft .zcwf_col_fld {
-            width: auto;
-            float: none !important;
-          }
-        }
-      `}</style>
     </div>
-  )
+  );
 }
