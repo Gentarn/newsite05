@@ -56,6 +56,13 @@ body {
   background-color: #fff;
 }
 
+.contact-form-title {
+  max-width: 900px;
+  color: black;
+  font-family: Arial;
+  font-size: 24px;
+}
+
 h1,
 h2,
 h3,

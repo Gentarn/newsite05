@@ -9,7 +9,7 @@ import { ContactForm } from "@/components/ui/contact-form"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-gray-800">
+    <div className="flex flex-col min-h-screen bg-white text-gray-800">
       {/* ヘッダー */}
       <header className="fixed top-0 left-0 w-full bg-white/95 text-gray-800 px-4 py-3 border-b z-50 backdrop-blur-sm">
         <div className="container mx-auto flex justify-between items-center">
@@ -234,13 +234,13 @@ export default function Home() {
 
       {/* コンタクトフォーム */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 max-w-xl">
+        <div className="container mx-auto px-4" style={{maxWidth: '70%'}}>
           <ContactForm />
         </div>
       </section>
 
       {/* フッター */}
-      <footer className="bg-white py-8 border-t">
+      <footer className="bg-white py-8 border-t mt-auto">
         <div className="container mx-auto px-4">
           <p className="text-center text-gray-600">Copyright © 2025 OpenFace LLC All rights reserved</p>
         </div>
