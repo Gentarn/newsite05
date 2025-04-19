@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 
 interface FormData {
   lastName: string;
@@ -252,6 +252,13 @@ export function ContactForm() {
               リセット
             </button>
           </div>
+        </div>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '20px'
+        }}>
+          <Toaster position="bottom-center" />
         </div>
       </form>
     </div>
