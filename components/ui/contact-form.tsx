@@ -105,15 +105,16 @@ export function ContactForm() {
         maxWidth: '900px', 
         color: 'black', 
         fontFamily: 'Noto Sans JP',
-        fontSize: '20px',
-        textAlign: 'center',
-        marginBottom: '15px'
+        fontSize: '24px',
+        textAlign: 'left',
+        marginBottom: '40px',
+
       }}>
         お問い合わせ
       </div>
       
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='zcwf_row' style={{ margin: '10px 0 19px 0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ paddingLeft: '10px' }}>
+        <div className='zcwf_row' style={{ margin: '50px 0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className='zcwf_col_lab' style={{ 
             fontSize: '16px', 
             fontFamily: 'Noto Sans JP',
@@ -142,7 +143,7 @@ export function ContactForm() {
           </div>
         </div>
 
-        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <div className='zcwf_row' style={{ margin: '40px 0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className='zcwf_col_lab' style={{ 
             fontSize: '16px', 
             fontFamily: 'Noto Sans JP',
@@ -178,7 +179,7 @@ export function ContactForm() {
           </div>
         </div>
 
-        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+        <div className='zcwf_row' style={{ margin: '40px 0', display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <div className='zcwf_col_lab' style={{ 
             fontSize: '16px', 
             fontFamily: 'Noto Sans JP',
