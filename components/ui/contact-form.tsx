@@ -113,24 +113,24 @@ export function ContactForm() {
       </div>
       
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='zcwf_row' style={{ margin: '10px 0 19px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className='zcwf_row' style={{ margin: '10px 0 19px 0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className='zcwf_col_lab' style={{ 
             fontSize: '16px', 
             fontFamily: 'Noto Sans JP',
-            textAlign: 'center',
-            width: '100%',
-            marginBottom: '8px'
+            textAlign: 'left',
+            width: '100px',
+            marginRight: '15px'
           }}>
             <label htmlFor='Last_Name'>
               お名前 <span style={{ color: 'red' }}>*</span>
             </label>
           </div>
-          <div className='zcwf_col_fld' style={{ width: '100%' }}>
+          <div className='zcwf_col_fld' style={{ flex: 1 }}>
             <input
               id='Last_Name'
               {...register('lastName', { required: 'お名前は必須です' })}
               style={{ 
-                width: '50%', 
+                width: '70%', 
                 border: '1px solid #c0c6cc', 
                 borderRadius: '2px',
                 height: '3em',
@@ -142,19 +142,19 @@ export function ContactForm() {
           </div>
         </div>
 
-        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           <div className='zcwf_col_lab' style={{ 
             fontSize: '16px', 
             fontFamily: 'Noto Sans JP',
             textAlign: 'left',
-            width: '100%',
-            marginBottom: '5px'
+            width: '100px',
+            marginRight: '15px'
           }}>
             <label htmlFor='Email'>
               メール <span style={{ color: 'red' }}>*</span>
             </label>
           </div>
-          <div className='zcwf_col_fld' style={{ width: '100%' }}>
+          <div className='zcwf_col_fld' style={{ flex: 1 }}>
             <input
               id='Email'
               type='email'
@@ -166,40 +166,42 @@ export function ContactForm() {
                 }
               })}
               style={{ 
-                width: '50%', 
+                width: '70%', 
                 border: '1px solid #c0c6cc', 
                 borderRadius: '2px',
                 height: '3em',
                 lineHeight: '3em',
-                padding: '20px'
+                padding: '8px'
               }}
             />
             {errors.email && <span style={{ color: 'red' }}>{errors.email.message as string}</span>}
           </div>
         </div>
 
-        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className='zcwf_row' style={{ margin: '10px 0', display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
           <div className='zcwf_col_lab' style={{ 
             fontSize: '16px', 
             fontFamily: 'Noto Sans JP',
             textAlign: 'left',
-            width: '100%',
-            marginBottom: '5px'
+            width: '100px',
+            marginRight: '15px',
+            paddingTop: '8px'
           }}>
             <label htmlFor='Description'>
               内容 <span style={{ color: 'red' }}>*</span>
             </label>
           </div>
-          <div className='zcwf_col_fld' style={{ width: '100%' }}>
+          <div className='zcwf_col_fld' style={{ flex: 1 }}>
             <textarea
               id='Description'
               {...register('description', { required: '内容は必須です' })}
               style={{ 
-                width: '50%', 
+                width: '70%', 
                 border: '1px solid #c0c6cc', 
                 borderRadius: '2px',
                 fontFamily: 'Arial, sans-serif',
-                minHeight: '100px'
+                minHeight: '100px',
+                padding: '8px'
               }}
             />
             {errors.description && <span style={{ color: 'red' }}>{errors.description.message as string}</span>}

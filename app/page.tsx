@@ -152,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* チームセクション */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-20 bg-white mb-[50px]">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-serif font-bold text-center mb-16">OUR TEAM</h2>
           <div className="max-w-sm mx-auto text-center">
