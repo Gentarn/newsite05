@@ -211,10 +211,10 @@ export default function Home() {
               </div>
               <h3 className="font-serif font-bold text-xl mb-4">LET&apos;S GET SOCIAL</h3>
               <div className="flex justify-center space-x-4">
-                <a href="#" className="text-white hover:text-gray-200 transition-colors">
+                <a href="https://www.facebook.com/masanori.takeuchi" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-200 transition-colors">
                   <Facebook className="w-6 h-6" />
                 </a>
-                <a href="#" className="text-white hover:text-gray-200 transition-colors">
+                <a href="https://x.com/matakeuchi" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-200 transition-colors">
                   <Image
                     src="/images/twitter.jpg"
                     alt="Twitter"
@@ -223,7 +223,7 @@ export default function Home() {
                     className="w-6 h-6"
                   />
                 </a>
-                <a href="#" className="text-white hover:text-gray-200 transition-colors">
+                <a href="https://www.linkedin.com/in/openfacellc/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-200 transition-colors">
                   <Linkedin className="w-6 h-6" />
                 </a>
               </div>
