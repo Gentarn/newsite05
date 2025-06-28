@@ -84,7 +84,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-serif font-bold text-center mb-16">OUR SERVICES</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer">
+            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer" onClick={() => window.location.href = '/BPM'}>
               <CardContent className="p-6 text-center">
                 <Image
                   src="/images/BPM-p-500.jpeg"
@@ -100,7 +100,7 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer">
+            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer" onClick={() => window.location.href = '/LowCodeDev'}>
               <CardContent className="p-6 text-center">
                 <Image
                   src="/images/LowCode.jpeg"
@@ -117,7 +117,7 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer">
+            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer" onClick={() => window.location.href = '/cloud_migration'}>
               <CardContent className="p-6 text-center">
                 <Image
                   src="/images/CloudMigration.jpeg"
@@ -132,7 +132,7 @@ export default function Home() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer">
+            <Card className="bg-white shadow-md hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-pointer" onClick={() => window.location.href = '/AI_support'}>
               <CardContent className="p-6 text-center">
                 <Image
                   src="/images/ITmanage.jpeg"
